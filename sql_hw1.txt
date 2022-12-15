@@ -1,0 +1,88 @@
+SQL
+HW1
+
+QUERY 1
+-- Создание таблицы "user" --
+CREATE TABLE user
+(
+	id INTEGER PRIMARY KEY,
+	user_name VARCHAR(255) NOT NULL,
+	level_id INTEGER NOT NULL,
+	skill INTEGER NOT NULL
+);
+
+QUERY 2 
+-- Наполнение таблицы "user" данными --
+INSERT INTO user
+	(user_name, level_id, skill)
+VALUES
+	('Anton', 1, 900000),
+	('Denis', 3, 4000),
+	('Petr', 2, 50000),
+	('Andrey', 4, 20),
+	('Olga', 1, 600000),
+	('Anna', 1, 1600000);
+
+QUERY 3
+-- Создание таблицы "level" --
+CREATE TABLE level
+(
+	id INTEGER PRIMARY KEY,
+	level_name VARCHAR(255) NOT NULL
+);
+
+QUERY 4
+-- Наполнение таблицы "level" данными --
+INSERT INTO level
+	(level_name)
+VALUES
+	('admin'),
+	('power_user'),
+	('user'),
+	('guest');
+
+QUERY 5
+--1. Отобрать из таблицы user всех пользователей, --
+-- у которых level_id = 1, skill > 799000 --
+-- и в имени встречается буква а --
+SELECT user_name
+FROM user
+WHERE level_id = 1 AND skill > 799000 AND user_name LIKE '%a%';
+
+QUERY 6
+-- 2. Удалить из таблицы "user" всех пользователей, у которых skill меньше 100000 --
+DELETE FROM user
+WHERE skill < 100000;							
+
+QUERY 7
+-- 3. Вывести все данные из таблицы "user" в порядке убывания по полю skill --
+SELECT *
+FROM user
+ORDER BY skill DESC;
+
+QUERY 8
+-- 4. Добавить в таблицу "user" нового пользователя по имени Oleg, с уровнем 4 и skill = 10 --
+INSERT INTO user
+	(user_name, level_id, skill)
+VALUES
+	('Oleg', 4, 10);
+
+QUERY 9
+-- 5. Обновить данные в таблице "user" - для пользователей с level_id меньше 2 проставить skill 2000000 --
+UPDATE user
+SET skill = 2000000
+WHERE level_id < 2;
+
+QUERY 10
+-- 6. Выбрать user_name всех пользователей уровня admin, используя подзапрос --
+SELECT user_name
+FROM user 
+WHERE id IN (SELECT id FROM level WHERE level_name = 'admin');
+
+QUERY 11
+-- 7. Выбрать user_name всех пользователей уровня admin, используя JOIN --
+SELECT u.user_name, l.level_name
+FROM user u
+INNER JOIN level l
+ON u.id = l.id
+WHERE l.level_name = 'admin';
